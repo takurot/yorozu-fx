@@ -1,0 +1,50 @@
+Local read-only prerequisites receipt. Captured 2026-11-08.
+Checkout base 78b2029f81e3da1c9d37311329472a810c7adc28.
+test -e exits 0 for present and 1 for absent.
+No Resolve startup, installation, or Windows inspection was performed.
+$ date -u +%Y-%m-%dT%H:%M:%SZ
+2026-11-07T21:02:29Z
+exit=0
+$ uname -m
+arm64
+exit=0
+$ sw_vers
+ProductName:		macOS
+ProductVersion:		27.2
+BuildVersion:		26B123
+exit=0
+$ sysctl -n hw.memsize
+8589934592
+exit=0
+$ sysctl -n machdep.cpu.brand_string
+Apple M1
+exit=0
+$ system_profiler SPDisplaysDataType | sed '/^[[:space:]]*Displays:/,$d'
+Graphics/Displays:
+
+    Apple M1:
+
+      Chipset Model: Apple M1
+      Type: GPU
+      Bus: Built-In
+      Total Number of Cores: 8
+      Vendor: Apple (0x106b)
+      Metal Support: Metal 4
+exit=0
+$ xcode-select -p
+/Library/Developer/CommandLineTools
+exit=0
+$ xcrun --find metal
+xcrun: error: unable to find utility "metal", not a developer tool or in PATH
+exit=72
+$ xcrun --find metallib
+xcrun: error: unable to find utility "metallib", not a developer tool or in PATH
+exit=72
+$ test -e '/Applications/DaVinci Resolve/DaVinci Resolve.app'
+exit=1
+$ test -e '/Applications/DaVinci Resolve.app'
+exit=1
+$ test -e /Applications/Xcode.app
+exit=1
+$ test -e /Library/Developer/CommandLineTools
+exit=0
