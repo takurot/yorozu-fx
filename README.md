@@ -49,6 +49,8 @@ Exported LUTs use DWG/DaVinci Intermediate input and output values. They do not 
 ## Documentation
 
 - [Product specification](docs/SPEC.md) — the authoritative specification, written in Japanese. Includes the concept review, competitor research, evaluation of 12 differentiation ideas, selected features, technical contracts, acceptance criteria, and delivery gates.
+- [Task plan](docs/TASK_PLAN.md) — 31 tasks with dependencies, deliverables, acceptance criteria, and release gates, written in Japanese.
+- [Task plan review](docs/TASK_PLAN_REVIEW.md) — independent sub-agent review results and the resulting clarification.
 - [Original concept](docs/Color_Mixing_Studio_Functional_Spec_v1.0.docx.md) — the earlier web-first concept retained for context. The product specification takes precedence for plugin development.
 
 ## Development roadmap
