@@ -341,4 +341,40 @@ flowchart LR
 
 起票前に独立サブエージェントが仕様カバレッジと依存関係/完了判定をレビューする。指摘・修正・再レビュー結果は [TASK_PLAN_REVIEW.md](TASK_PLAN_REVIEW.md) へ保存する。未解決の実行阻害指摘が0になってから起票する。
 
-Issue番号・URLは起票後に本節へ追記する。既存Issueは起票前に全状態で確認し、同じタスクがあれば再利用して重複起票しない。各Issue本文へSPECの基準版、計画ID、直接依存Issue、成果物、受入条件、検証、未確保条件を記載する。Gate Issueと将来候補の区別を保ち、不採用/保留機能の実装Issueは作らない。
+起票前に既存Issueを全状態で確認し、既存0件から31件を起票した。各Issue本文へSPECの基準版、計画ID、直接依存Issue、成果物、受入条件、検証、未確保条件を記載した。Gate Issueと将来候補の区別を保ち、不採用/保留機能の実装Issueは作成していない。
+
+起票確認日: 2026-11-07。31件すべてOPENであり、実装・ゲート評価は未完了。GitHubから本文・状態を再取得し、計画との一致、重複なし、依存Issueの存在を確認した。Issue本文はレビュー済み計画のコミット `9fe9332303cd73706ee5237f9f759fe38236efd0` を参照する。今後の状態はGitHubを正とする。
+
+| 計画ID | フェーズ | Issue | 直接依存Issue |
+| --- | --- | --- | --- |
+| P01 | G0 | [#1](https://github.com/takurot/yorozu-fx/issues/1) | なし |
+| P02 | G0 | [#2](https://github.com/takurot/yorozu-fx/issues/2) | なし |
+| P03 | G0 | [#3](https://github.com/takurot/yorozu-fx/issues/3) | [#1](https://github.com/takurot/yorozu-fx/issues/1), [#2](https://github.com/takurot/yorozu-fx/issues/2) |
+| P04 | G0 | [#4](https://github.com/takurot/yorozu-fx/issues/4) | [#3](https://github.com/takurot/yorozu-fx/issues/3) |
+| P05 | G0 | [#5](https://github.com/takurot/yorozu-fx/issues/5) | [#1](https://github.com/takurot/yorozu-fx/issues/1), [#2](https://github.com/takurot/yorozu-fx/issues/2), [#3](https://github.com/takurot/yorozu-fx/issues/3), [#4](https://github.com/takurot/yorozu-fx/issues/4) |
+| P06 | G1 | [#6](https://github.com/takurot/yorozu-fx/issues/6) | [#5](https://github.com/takurot/yorozu-fx/issues/5) |
+| P07 | G1 | [#7](https://github.com/takurot/yorozu-fx/issues/7) | [#6](https://github.com/takurot/yorozu-fx/issues/6) |
+| P08 | G1 | [#8](https://github.com/takurot/yorozu-fx/issues/8) | [#6](https://github.com/takurot/yorozu-fx/issues/6), [#7](https://github.com/takurot/yorozu-fx/issues/7) |
+| P09 | G1 | [#9](https://github.com/takurot/yorozu-fx/issues/9) | [#7](https://github.com/takurot/yorozu-fx/issues/7), [#8](https://github.com/takurot/yorozu-fx/issues/8) |
+| P10 | G1 | [#10](https://github.com/takurot/yorozu-fx/issues/10) | [#9](https://github.com/takurot/yorozu-fx/issues/9) |
+| P11 | G1 | [#11](https://github.com/takurot/yorozu-fx/issues/11) | [#4](https://github.com/takurot/yorozu-fx/issues/4), [#10](https://github.com/takurot/yorozu-fx/issues/10) |
+| P12 | G1 | [#12](https://github.com/takurot/yorozu-fx/issues/12) | [#6](https://github.com/takurot/yorozu-fx/issues/6), [#7](https://github.com/takurot/yorozu-fx/issues/7), [#8](https://github.com/takurot/yorozu-fx/issues/8), [#9](https://github.com/takurot/yorozu-fx/issues/9), [#10](https://github.com/takurot/yorozu-fx/issues/10), [#11](https://github.com/takurot/yorozu-fx/issues/11) |
+| P13 | G2 | [#13](https://github.com/takurot/yorozu-fx/issues/13) | [#12](https://github.com/takurot/yorozu-fx/issues/12) |
+| P14 | G2 | [#14](https://github.com/takurot/yorozu-fx/issues/14) | [#13](https://github.com/takurot/yorozu-fx/issues/13) |
+| P15 | G2 | [#15](https://github.com/takurot/yorozu-fx/issues/15) | [#14](https://github.com/takurot/yorozu-fx/issues/14) |
+| P16 | G2 | [#16](https://github.com/takurot/yorozu-fx/issues/16) | [#13](https://github.com/takurot/yorozu-fx/issues/13), [#14](https://github.com/takurot/yorozu-fx/issues/14), [#15](https://github.com/takurot/yorozu-fx/issues/15) |
+| P17 | G3 | [#17](https://github.com/takurot/yorozu-fx/issues/17) | [#16](https://github.com/takurot/yorozu-fx/issues/16) |
+| P18 | G3 | [#18](https://github.com/takurot/yorozu-fx/issues/18) | [#17](https://github.com/takurot/yorozu-fx/issues/17) |
+| P19 | G3 | [#19](https://github.com/takurot/yorozu-fx/issues/19) | [#18](https://github.com/takurot/yorozu-fx/issues/18) |
+| P20 | G3 | [#20](https://github.com/takurot/yorozu-fx/issues/20) | [#19](https://github.com/takurot/yorozu-fx/issues/19) |
+| P21 | G3 | [#21](https://github.com/takurot/yorozu-fx/issues/21) | [#17](https://github.com/takurot/yorozu-fx/issues/17), [#18](https://github.com/takurot/yorozu-fx/issues/18), [#19](https://github.com/takurot/yorozu-fx/issues/19), [#20](https://github.com/takurot/yorozu-fx/issues/20) |
+| P22 | G3 | [#22](https://github.com/takurot/yorozu-fx/issues/22) | [#17](https://github.com/takurot/yorozu-fx/issues/17), [#18](https://github.com/takurot/yorozu-fx/issues/18), [#19](https://github.com/takurot/yorozu-fx/issues/19), [#20](https://github.com/takurot/yorozu-fx/issues/20), [#21](https://github.com/takurot/yorozu-fx/issues/21) |
+| P23 | G4 | [#23](https://github.com/takurot/yorozu-fx/issues/23) | [#22](https://github.com/takurot/yorozu-fx/issues/22) |
+| P24 | G4 | [#24](https://github.com/takurot/yorozu-fx/issues/24) | [#23](https://github.com/takurot/yorozu-fx/issues/23) |
+| P25 | G4 | [#25](https://github.com/takurot/yorozu-fx/issues/25) | [#23](https://github.com/takurot/yorozu-fx/issues/23), [#24](https://github.com/takurot/yorozu-fx/issues/24) |
+| P26 | G4 | [#26](https://github.com/takurot/yorozu-fx/issues/26) | [#23](https://github.com/takurot/yorozu-fx/issues/23), [#24](https://github.com/takurot/yorozu-fx/issues/24), [#25](https://github.com/takurot/yorozu-fx/issues/25) |
+| P27 | G5 | [#27](https://github.com/takurot/yorozu-fx/issues/27) | [#26](https://github.com/takurot/yorozu-fx/issues/26) |
+| P28 | G5 | [#28](https://github.com/takurot/yorozu-fx/issues/28) | [#27](https://github.com/takurot/yorozu-fx/issues/27) |
+| P29 | G5 | [#29](https://github.com/takurot/yorozu-fx/issues/29) | [#26](https://github.com/takurot/yorozu-fx/issues/26), [#27](https://github.com/takurot/yorozu-fx/issues/27) |
+| P30 | G5 | [#30](https://github.com/takurot/yorozu-fx/issues/30) | [#28](https://github.com/takurot/yorozu-fx/issues/28), [#29](https://github.com/takurot/yorozu-fx/issues/29) |
+| P31 | G5 | [#31](https://github.com/takurot/yorozu-fx/issues/31) | [#30](https://github.com/takurot/yorozu-fx/issues/30) |
