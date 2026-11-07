@@ -1,0 +1,16 @@
+if(NOT EXISTS "${BUNDLE_ROOT}/Contents/${PLATFORM_DIR}/yorozu-fx.ofx")
+    message(FATAL_ERROR "Packaged module is missing")
+endif()
+file(SHA256 "${SOURCE_ROOT}/third_party/openfx/LICENSE.md" source_license)
+file(SHA256 "${BUNDLE_ROOT}/Contents/Resources/openfx-LICENSE.md" packaged_license)
+if(NOT source_license STREQUAL packaged_license)
+    message(FATAL_ERROR "Packaged SDK license differs from upstream license")
+endif()
+if(PLATFORM_DIR STREQUAL "MacOS")
+    execute_process(COMMAND /usr/libexec/PlistBuddy -c "Print :CFBundleExecutable"
+        "${BUNDLE_ROOT}/Contents/Info.plist" RESULT_VARIABLE status OUTPUT_VARIABLE executable
+        OUTPUT_STRIP_TRAILING_WHITESPACE)
+    if(NOT status EQUAL 0 OR NOT executable STREQUAL "yorozu-fx.ofx")
+        message(FATAL_ERROR "Bundle executable does not match Info.plist")
+    endif()
+endif()

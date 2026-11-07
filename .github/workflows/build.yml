@@ -1,0 +1,94 @@
+name: Native OFX build
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  native:
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - os: macos-15
+            arch: arm64
+            platform: MacOS
+          - os: windows-2022
+            arch: x64
+            platform: Win64
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+      - name: Get verified CMake 3.31.6 on macOS
+        if: runner.os == 'macOS'
+        shell: bash
+        run: |
+          set -euo pipefail
+          archive="$RUNNER_TEMP/cmake.tar.gz"
+          curl --fail --location https://github.com/Kitware/CMake/releases/download/v3.31.6/cmake-3.31.6-macos-universal.tar.gz --output "$archive"
+          echo "330b9514f5112e5ed4fb08b8b05803b776fd9b539a6ae12927d14dcc0ee2ba8d  $archive" | shasum -a 256 -c -
+          tar -xzf "$archive" -C "$RUNNER_TEMP"
+          echo "$RUNNER_TEMP/cmake-3.31.6-macos-universal/CMake.app/Contents/bin" >> "$GITHUB_PATH"
+      - name: Get verified CMake 3.31.6 on Windows
+        if: runner.os == 'Windows'
+        shell: pwsh
+        run: |
+          $archive = Join-Path $env:RUNNER_TEMP cmake.zip
+          Invoke-WebRequest https://github.com/Kitware/CMake/releases/download/v3.31.6/cmake-3.31.6-windows-x86_64.zip -OutFile $archive
+          if ((Get-FileHash $archive -Algorithm SHA256).Hash.ToLower() -ne 'd163cd3ab4959b0a53fa8988f2ddbd2e6c501658201e6a154386bad9dbe4f836') { throw 'CMake checksum mismatch' }
+          Expand-Archive $archive -DestinationPath $env:RUNNER_TEMP
+          Join-Path $env:RUNNER_TEMP 'cmake-3.31.6-windows-x86_64/bin' | Out-File -FilePath $env:GITHUB_PATH -Append
+      - name: Build and test macOS arm64
+        if: runner.os == 'macOS'
+        shell: bash
+        run: |
+          set -euo pipefail
+          echo "ImageOS=$ImageOS ImageVersion=$ImageVersion"
+          echo "Repository commit $GITHUB_SHA"
+          uname -m
+          test "$(uname -m)" = arm64
+          xcodebuild -version
+          clang++ --version
+          cmake --version
+          cmake -S . -B build/native -DCMAKE_BUILD_TYPE=Release -DCMAKE_OSX_ARCHITECTURES=arm64
+          cmake --build build/native --parallel
+          ctest --test-dir build/native -C Release --output-on-failure --no-tests=error
+          file build/native/bundle/Release/yorozu-fx.ofx.bundle/Contents/MacOS/yorozu-fx.ofx
+          lipo -archs build/native/bundle/Release/yorozu-fx.ofx.bundle/Contents/MacOS/yorozu-fx.ofx
+          nm -gU build/native/bundle/Release/yorozu-fx.ofx.bundle/Contents/MacOS/yorozu-fx.ofx
+          shasum -a 256 build/native/bundle/Release/yorozu-fx.ofx.bundle/Contents/MacOS/yorozu-fx.ofx
+      - name: Build and test Windows x64
+        if: runner.os == 'Windows'
+        shell: pwsh
+        run: |
+          Write-Output "ImageOS=$env:ImageOS ImageVersion=$env:ImageVersion"
+          Write-Output "Repository commit $env:GITHUB_SHA"
+          Write-Output "Runner architecture $env:RUNNER_ARCH"
+          if ($env:RUNNER_ARCH -ne 'X64') { throw 'Expected native x64 runner' }
+          cmake --version
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          cmake -S . -B build/native -G 'Visual Studio 17 2022' -A x64 -T v143
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          Get-Content build/native/CMakeFiles/3.31.6/CMakeCXXCompiler.cmake
+          cmake --build build/native --config Release --parallel
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          ctest --test-dir build/native -C Release --output-on-failure --no-tests=error
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          Get-FileHash build/native/bundle/Release/yorozu-fx.ofx.bundle/Contents/Win64/yorozu-fx.ofx -Algorithm SHA256
+      - name: Record evidence boundary
+        shell: bash
+        run: |
+          echo "Built commit $GITHUB_SHA on ${{ matrix.os }} for ${{ matrix.arch }}." >> "$GITHUB_STEP_SUMMARY"
+          echo 'The native loader checks the build stub. Resolve, GPU behavior, signing, and installation are unverified.' >> "$GITHUB_STEP_SUMMARY"
+      - name: Upload exact native bundle and test log
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: yorozu-fx-${{ matrix.os }}-${{ matrix.arch }}-${{ github.sha }}
+          if-no-files-found: error
+          path: |
+            build/native/bundle/Release/yorozu-fx.ofx.bundle/
+            build/native/Testing/Temporary/LastTest.log

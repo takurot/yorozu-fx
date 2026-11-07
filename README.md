@@ -4,7 +4,7 @@ A planned OpenFX color-grading plugin for DaVinci Resolve Studio: blend original
 
 ## Project status
 
-**Specification stage.** This repository currently contains product planning and documentation. There is no plugin implementation, installer, or downloadable release yet. Features, platform support, and performance targets below are planned and require validation before release.
+**Build foundation.** This repository contains product planning and a native OFX build stub with ABI tests. The stub rejects host Load and does not render images. There is no installer or downloadable release yet. Features, platform support, and performance targets below are planned and require validation before release.
 
 ## Product direction
 
@@ -62,4 +62,4 @@ Exported LUTs use DWG/DaVinci Intermediate input and output values. They do not 
 5. Run visual, compatibility, performance, and user-workflow evaluations.
 6. Prepare signed distribution packages after all required release gates pass.
 
-Build and installation instructions will be added when an implementation is available. The [specification](docs/SPEC.md) defines the required evidence for each stage.
+See [Build and test the OFX stub](docs/DEVELOPMENT.md) for native build commands and verification limits. The [specification](docs/SPEC.md) defines the required evidence for each stage.
